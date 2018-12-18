@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - docker version
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - docker pull $CONTAINER_REPOSITORY_URL:$CODEBUILD_RESOLVED_SOURCE_VERSION || true
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build --cache-from $CONTAINER_REPOSITORY_URL:latest --tag $CONTAINER_REPOSITORY_URL:latest .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $CONTAINER_REPOSITORY_URL:latest
