@@ -2,6 +2,7 @@ FROM php:7.1-fpm-alpine
 MAINTAINER Rakshit Menpara <rakshit@improwised.com>
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_VERSION 1.8.0
 ENV composer_hash 93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
@@ -45,10 +46,18 @@ RUN set -ex \
     && rm -Rf /var/www/* \
     && rm -Rf /etc/nginx/nginx.conf \
   # Composer
-  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === '${composer_hash}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/usr/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');" \
+  && curl --silent --fail --location --retry 3 --output /tmp/installer.php --url https://raw.githubusercontent.com/composer/getcomposer.org/b107d959a5924af895807021fcef4ffec5a76aa9/web/installer \
+    && php -r " \
+      \$signature = '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061'; \
+      \$hash = hash('SHA384', file_get_contents('/tmp/installer.php')); \
+      if (!hash_equals(\$signature, \$hash)) { \
+          unlink('/tmp/installer.php'); \
+          echo 'Integrity check failed, installer is either corrupt or worse.' . PHP_EOL; \
+          exit(1); \
+      }" \
+    && php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} \
+    && composer --ansi --version --no-interaction \
+    && rm -rf /tmp/* /tmp/.htaccess \
   # Cleanup
   && apk del -f .build-deps
 
