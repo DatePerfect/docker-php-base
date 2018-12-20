@@ -23,13 +23,14 @@ RUN set -ex \
 
   # Install PECL and PEAR extensions
   && pecl install \
+    apcu-5.1.16 \
     memcached-3.0.4 \
 
   # Install and enable php extensions
   && docker-php-ext-enable \
-    memcached \
+    apcu memcached \
   && docker-php-ext-install \
-    apcu bcmath dom ctype curl exif fileinfo fpm gd gmp iconv intl json \
+    bcmath dom ctype curl exif fileinfo fpm gd gmp iconv intl json \
     mbstring mcrypt mysqlnd mysqli opcache openssl pcntl pdo pdo_mysql \
     pdo_sqlite phar posix redis session simplexml soap sockets sqlite3 tidy \
     tokenizer xml xmlwriter zip zlib \
