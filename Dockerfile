@@ -14,13 +14,13 @@ RUN set -ex \
   && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS curl-dev cyrus-sasl-dev gmp-dev icu-dev imagemagick-dev \
     libgsasl-dev libmcrypt-dev libmemcached-dev libtool libxml2-dev \
-    mariadb-dev sqlite-dev  zlib-dev \
+    mariadb-dev sqlite-dev tidyhtml-dev zlib-dev \
 
   # Install production dependencies
   && apk add --no-cache --virtual .run-deps \
     bash curl g++ gcc git gmp imagemagick libc-dev libpng-dev make mysql-client \
     nodejs nodejs-npm openssh-client mariadb-client sudo rsync ca-certificates \
-    dialog libjpeg supervisor vim wget nginx libmemcached-libs zlib \
+    dialog libjpeg supervisor vim wget nginx libmemcached-libs tidyhtml-libs zlib \
 
 
   # Install PECL and PEAR extensions
@@ -33,10 +33,8 @@ RUN set -ex \
   && docker-php-ext-enable \
     apcu memcached redis \
   && docker-php-ext-install \
-    bcmath ctype curl dom exif fileinfo gd gmp iconv intl json \
-    mbstring mcrypt mysqli opcache pcntl pdo pdo_mysql \
-    pdo_sqlite phar posix session simplexml soap sockets tidy \
-    tokenizer xml xmlwriter zip \
+    bcmath exif gd gmp intl mcrypt mysqli opcache pcntl pdo_mysql soap sockets \
+    tidy tokenizer xml xmlwriter zip \
 
   # Create directories
   && mkdir -p /etc/nginx \
