@@ -12,13 +12,14 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 RUN set -ex \
   && apk add --no-cache --virtual .build-deps \
-    $PHPIZE_DEPS curl-dev imagemagick-dev libtool libxml2-dev mariadb-dev sqlite-dev \
+    $PHPIZE_DEPS curl-dev imagemagick-dev libtool libxml2-dev mariadb-dev \
+    sqlite-dev libmemcached-dev \
 
   # Install production dependencies
   && apk add --no-cache --virtual .run-deps \
     bash curl g++ gcc git imagemagick libc-dev libpng-dev make mysql-client \
     nodejs nodejs-npm openssh-client mariadb-client sudo rsync ca-certificates \
-    dialog libjpeg supervisor vim wget nginx \
+    dialog libjpeg supervisor vim wget nginx libmemcached-libs zlib \
 
   # Install PECL and PEAR extensions
   && pecl install \
