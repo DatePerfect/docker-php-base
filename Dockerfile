@@ -34,7 +34,7 @@ RUN set -ex \
     apcu memcached redis \
   && docker-php-ext-install \
     bcmath exif gd gmp intl mcrypt mysqli opcache pcntl pdo_mysql soap sockets \
-    tidy tokenizer xml xmlwriter zip \
+    tidy zip \
 
   # Create directories
   && mkdir -p /etc/nginx \
@@ -45,10 +45,10 @@ RUN set -ex \
     && rm -Rf /var/www/* \
     && rm -Rf /etc/nginx/nginx.conf \
   # Composer
-  && php7 -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php7 -r "if (hash_file('SHA384', 'composer-setup.php') === '${composer_hash}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php7 composer-setup.php --install-dir=/usr/bin --filename=composer \
-    && php7 -r "unlink('composer-setup.php');" \
+  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php -r "if (hash_file('SHA384', 'composer-setup.php') === '${composer_hash}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php composer-setup.php --install-dir=/usr/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');" \
   # Cleanup
   && apk del -f .build-deps
 
