@@ -22,7 +22,7 @@ RUN set -ex \
     bash curl g++ gcc git gmp imagemagick libc-dev libpng-dev make mysql-client \
     nodejs nodejs-npm openssh-client mariadb-client sudo rsync ca-certificates \
     dialog libjpeg supervisor vim wget nginx libmemcached-libs tidyhtml-libs zlib \
-
+    memcached \
 
   # Install PECL and PEAR extensions
   && pecl install \
