@@ -12,7 +12,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 RUN set -ex \
   && apk add --no-cache --virtual .build-deps \
-    $PHPIZE_DEPS curl-dev imagemagick-dev libtool libxml2-dev mariadb-dev \
+    $PHPIZE_DEPS curl-dev gmp-dev imagemagick-dev libtool libxml2-dev mariadb-dev \
     sqlite-dev libmemcached-dev \
 
   # Install production dependencies
