@@ -21,19 +21,21 @@ RUN set -ex \
     nodejs nodejs-npm openssh-client mariadb-client sudo rsync ca-certificates \
     dialog libjpeg supervisor vim wget nginx libmemcached-libs zlib \
 
+
   # Install PECL and PEAR extensions
   && pecl install \
     apcu-5.1.16 \
     memcached-3.0.4 \
+    redis-4.2.0 \
 
   # Install and enable php extensions
   && docker-php-ext-enable \
-    apcu memcached \
+    apcu memcached redis \
   && docker-php-ext-install \
-    bcmath dom ctype curl exif fileinfo fpm gd gmp iconv intl json \
-    mbstring mcrypt mysqlnd mysqli opcache openssl pcntl pdo pdo_mysql \
-    pdo_sqlite phar posix redis session simplexml soap sockets sqlite3 tidy \
-    tokenizer xml xmlwriter zip zlib \
+    bcmath ctype curl dom exif fileinfo gd gmp iconv intl json \
+    mbstring mcrypt mysqli opcache pcntl pdo pdo_mysql \
+    pdo_sqlite phar posix session simplexml soap sockets tidy \
+    tokenizer xml xmlwriter zip \
 
   # Create directories
   && mkdir -p /etc/nginx \
