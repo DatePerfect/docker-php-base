@@ -19,7 +19,7 @@ RUN set -ex \
 
   # Install production dependencies
   && apk add --no-cache --virtual .run-deps \
-    bash curl g++ gcc git gmp imagemagick libc-dev libpng-dev make mysql-client \
+    bash curl g++ gcc git gmp imagemagick libc-dev icu-libs libpng-dev libmcrypt make mysql-client \
     nodejs nodejs-npm openssh-client mariadb-client sudo rsync ca-certificates \
     dialog libjpeg supervisor vim wget nginx libmemcached-libs tidyhtml-libs zlib \
     memcached \
